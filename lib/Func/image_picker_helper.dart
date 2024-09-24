@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerHelper {
   Future<File?> pickImage() async{
     //เข้าถึง ImpagePicker
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     //สถานที่ที่เข้าถึงคือ gallery
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if(image != null){
       return File(image.path); //คืนค่ารูปภาพออกมา
@@ -19,7 +19,7 @@ class ImagePickerHelper {
   Future<File> saveImage(File imageFile) async {
     final directory = await getApplicationCacheDirectory();
     final String path = directory.path;
-    final String fileName = 'save_image.png';
+    const String fileName = 'save_image.png';
     final File savedFile = await imageFile.copy('$path/$fileName');
 
     return savedFile;

@@ -19,6 +19,7 @@ class _HomeState extends State<Home> {
     super.initState();
     widget.viewModel.fetchCatsData();
   }
+  @override
   Widget build(BuildContext context) {
     //Data
     // final List<CatsData> catsdata = [
@@ -53,7 +54,7 @@ class _HomeState extends State<Home> {
     // ];
 
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,10 +76,10 @@ class _HomeState extends State<Home> {
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   "My cats",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
@@ -93,7 +94,7 @@ class _HomeState extends State<Home> {
                 return Container(
                   child: Card(
                     elevation: 5,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: ListTile(
                         leading: CircleAvatar(
                           radius: 40,
@@ -101,7 +102,7 @@ class _HomeState extends State<Home> {
                         ),
                         title: Text(
                           "Cat Name : ${cat.catName}",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,22 +120,22 @@ class _HomeState extends State<Home> {
           Container(
             width: double.infinity,
             height: 50,
-            margin: EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             child: OutlinedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return Formscreen();
+                  return const Formscreen();
                 }));
                 print('เพิ่มแมวใหม่');
               },
+              style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.black26),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Icon(Icons.add), Text("เพิ่มแมวใหม่")],
               ),
-              style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Colors.black26),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5))),
             ),
           )
         ],

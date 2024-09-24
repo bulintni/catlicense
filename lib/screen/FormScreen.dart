@@ -4,6 +4,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:form_field_validator/form_field_validator.dart';
+
 class Formscreen extends StatefulWidget {
   const Formscreen({super.key});
 
@@ -19,119 +21,138 @@ class _FormscreenState extends State<Formscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("แบบฟอร์มเจ้าของแมว"),
+        title: const Text("แบบฟอร์มเจ้าของแมว"),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Form(
             key: formKey,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  //ชื่อเจ้าของ
+                  const Text(
                     "ชื่อเจ้าของ",
                     style: TextStyle(fontSize: 14),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.zero)),
                     onSaved: (String? fname) {
                       ownerData.firstName = fname;
                     },
+                    validator:
+                        RequiredValidator(errorText: "กรุณาป้อนชื่อเจ้าของ").call,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  //นามสกุลเจ้าของ
+                  const Text(
                     "นามสกุลเจ้าของ",
                     style: TextStyle(fontSize: 14),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.zero)),
                     onSaved: (String? lname) {
                       ownerData.lastName = lname;
                     },
+                    validator:
+                        RequiredValidator(errorText: "กรุณาป้อนนามสกุลเจ้าของ").call,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  //ชื่อแมว
+                  const Text(
                     "ชื่อแมว",
                     style: TextStyle(fontSize: 14),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.zero)),
                     onSaved: (String? catName) {
                       ownerData.catName = catName;
                     },
+                    validator: RequiredValidator(errorText: "กรุณาป้อนชื่อแมว").call,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  //ที่อยู่
+                  const Text(
                     "ที่อยู่",
                     style: TextStyle(fontSize: 14),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.zero)),
                     onSaved: (String? address) {
                       ownerData.address = address;
                     },
+                    validator:
+                        RequiredValidator(errorText: "กรุณาป้อนที่อยู่เจ้าของ").call,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  //เบอร์โทรเจ้าของ
+                  const Text(
                     "เบอร์โทรศัพย์เจ้าของ",
                     style: TextStyle(fontSize: 14),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.zero)),
                     onSaved: (String? phoneNumber) {
                       ownerData.phoneNumber = phoneNumber;
                     },
+                    keyboardType: TextInputType.phone,
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "กรุณาป้อนเบอร์เจ้าของแมว"),
+                      PatternValidator(r'^(?:[+0]9)?[0-9]{10,12}$',
+                          errorText: "กรุณาใส่ตัวเลขที่ถูกต้อง")
+                    ]).call,
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
 
                   //ช่อง upload รูป
 
-                  ownerData.catImages.length != 0
+                  ownerData.catImages.isNotEmpty
                       ? Text("จำนวนรูปภาพ ${ownerData.catImages.length}")
-                      : Text(
+                      : const Text(
                           "ยังไม่มีรูปภาพ",
                           style: TextStyle(color: Colors.red),
                         ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   DottedBorder(
                     color: Colors.blue,
                     strokeWidth: 2,
-                    dashPattern: [6, 3],
+                    dashPattern: const [6, 3],
                     child: TextButton(
                         onPressed: () async {
-                          File? imageFile = await _imagePickerHelper.pickImage();
-                          if(imageFile != null) {
+                          File? imageFile =
+                              await _imagePickerHelper.pickImage();
+                          if (imageFile != null) {
                             setState(() {
                               ownerData.catImages.add(imageFile.path);
                             });
                           }
                         },
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -145,7 +166,7 @@ class _FormscreenState extends State<Formscreen> {
                           ],
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   //ปุ่มตกลง
@@ -158,10 +179,12 @@ class _FormscreenState extends State<Formscreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5))),
                           onPressed: () {
-                            formKey.currentState!.save();
-                            print('Save รูป path : ${ownerData.catImages}');
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                              print('Save รูป path : ${ownerData.catImages}');
+                            }
                           },
-                          child: Text(
+                          child: const Text(
                             "Save",
                             style: TextStyle(color: Colors.white),
                           )),
@@ -173,7 +196,7 @@ class _FormscreenState extends State<Formscreen> {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text(
+                          child: const Text(
                             "Cancel",
                             style: TextStyle(color: Colors.white),
                           )),
