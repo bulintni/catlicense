@@ -1,11 +1,16 @@
+import 'package:catlicense/firebase_options.dart';
 import 'package:catlicense/provider/CatViewModel.dart';
 import 'package:catlicense/screen/FormScreen.dart';
 import 'package:catlicense/screen/Home.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
-void main() {
+void main() async { // เริ่มต้น Firebase
   runApp(MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           backgroundColor: Colors.blue[200],
         ),
-        body: TabBarView(children: [Home(viewModel: widget.catViewModel), const Formscreen()]),
+        body: TabBarView(children: [Home(viewModel: widget.catViewModel), Formscreen()]),
         bottomNavigationBar: const TabBar(tabs: [
           Tab(
             text: "แมวของฉัน",

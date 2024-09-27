@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "830344936669",
+    "project_id": "my-cats-app-flutter",
+    "storage_bucket": "my-cats-app-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830344936669:android:4e0bd8d5bb0919cff7ef34",
+        "android_client_info": {
+          "package_name": "com.example.catl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLvn4dKNsVcarlBDggXxMrxJ2kn6Hvixs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830344936669:android:eb97f5875443d9c4f7ef34",
+        "android_client_info": {
+          "package_name": "com.example.catlicense"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLvn4dKNsVcarlBDggXxMrxJ2kn6Hvixs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
