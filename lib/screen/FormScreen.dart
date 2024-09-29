@@ -247,7 +247,7 @@ class _FormscreenState extends State<Formscreen> {
                                         "catName": ownerData.catName,
                                         "address": ownerData.address,
                                         "phoneNumber": ownerData.phoneNumber,
-                                        "catsImagePath": ownerData.catImages
+                                        "catsImagePath": imageUrl,
                                       });
                                       print('Save เรียบร้อย');
                                       formKey.currentState!.reset();

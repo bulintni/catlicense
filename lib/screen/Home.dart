@@ -114,6 +114,7 @@ class _HomeState extends State<Home> {
                               child: ListTile(
                                   leading: CircleAvatar(
                                     radius: 30,
+                                    backgroundImage: NetworkImage(data["catsImagePath"]),
                                   ),
                                   title: Text("Cat Name : ${data["catName"]}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                                   subtitle: Column(
