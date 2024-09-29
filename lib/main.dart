@@ -5,12 +5,16 @@ import 'package:catlicense/screen/Home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-
-void main() async { // เริ่มต้น Firebase
-  runApp(MyApp());
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+Future<FirebaseApp> initializeFirebase() async {
+  return await Firebase.initializeApp(
+    options: DefaultFirebaseOptions
+        .currentPlatform, // ใช้ options จาก firebase_options.dart
   );
+}
+
+void main() async {
+  // เริ่มต้น Firebase
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +26,31 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: MyHomePage(title: 'Flutter Demo Home Page' ),
+      home: FirebaseInitializer(),
+    );
+  }
+}
+
+class FirebaseInitializer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: initializeFirebase(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error initializing Firebase: ${snapshot.error}'),
+            ),
+          );
+        } else {
+          return MyHomePage(title: 'Flutter Demo Home Page');
+        }
+      },
     );
   }
 }
@@ -38,6 +66,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           backgroundColor: Colors.blue[200],
         ),
-        body: TabBarView(children: [Home(viewModel: widget.catViewModel), Formscreen()]),
+        body: TabBarView(
+            children: [Home(viewModel: widget.catViewModel), Formscreen()]),
         bottomNavigationBar: const TabBar(tabs: [
           Tab(
             text: "แมวของฉัน",

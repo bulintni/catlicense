@@ -4,10 +4,12 @@ import 'package:catlicense/model/catdata.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Formscreen extends StatefulWidget {
   const Formscreen({super.key});
@@ -20,12 +22,13 @@ class _FormscreenState extends State<Formscreen> {
   final formKey = GlobalKey<FormState>();
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
   final OwnerData ownerData = OwnerData();
-  late Future<FirebaseApp> firebase = Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform
-    );
+  late Future<FirebaseApp> firebase =
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final CollectionReference _catsCollection =
       FirebaseFirestore.instance.collection("OwnerCatsData");
-  
+  late String imageUrl;
+  late File? imageFile;
+
   @override
 
   // void initState() async {
@@ -180,11 +183,11 @@ class _FormscreenState extends State<Formscreen> {
                             dashPattern: const [6, 3],
                             child: TextButton(
                                 onPressed: () async {
-                                  File? imageFile =
+                                  imageFile =
                                       await _imagePickerHelper.pickImage();
                                   if (imageFile != null) {
                                     setState(() {
-                                      ownerData.catImages.add(imageFile.path);
+                                      ownerData.catImages.add(imageFile!.path);
                                     });
                                   }
                                 },
@@ -216,7 +219,27 @@ class _FormscreenState extends State<Formscreen> {
                                           borderRadius:
                                               BorderRadius.circular(5))),
                                   onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
+                                    print("Save");
+                                    String uniqueFileName = DateTime.now()
+                                        .microsecondsSinceEpoch
+                                        .toString();
+                                    print("${uniqueFileName}");
+                                    print('${imageFile?.path}');
+                                    if (imageFile == null) return;
+                                    // สร้าง Storage, Path, Directory, File
+                                    Reference referenceRoot =
+                                        FirebaseStorage.instance.ref();
+                                    Reference referenceDirImages =
+                                        referenceRoot.child("Image");
+                                    Reference referenceToUpload =
+                                        referenceDirImages
+                                            .child(uniqueFileName);
+
+                                    try{
+                                      await referenceToUpload
+                                        .putFile(File(imageFile!.path));
+                                      imageUrl = await referenceToUpload.getDownloadURL();
+                                      if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
                                       await _catsCollection.add({
                                         "fname": ownerData.firstName,
@@ -228,6 +251,10 @@ class _FormscreenState extends State<Formscreen> {
                                       });
                                       print('Save เรียบร้อย');
                                       formKey.currentState!.reset();
+                                      Navigator.pop(context);
+                                    }
+                                    }catch(error){
+                                      print("${error}");
                                     }
                                   },
                                   child: const Text(
