@@ -1,5 +1,6 @@
 import 'package:catlicense/firebase_options.dart';
 import 'package:catlicense/provider/CatViewModel.dart';
+import 'package:catlicense/screen/ContactUsScreen.dart';
 import 'package:catlicense/screen/FormScreen.dart';
 import 'package:catlicense/screen/Home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -66,10 +67,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late String ownerCats;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setState(() {
+      ownerCats = "Joe Nama";
+    });
   }
 
   @override
@@ -77,19 +82,23 @@ class _MyHomePageState extends State<MyHomePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/logo.png'), // ใส่โลโก้ตรงนี้
+          toolbarHeight: 60,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("MeowApps", style: TextStyle(fontWeight: FontWeight.bold),),
+              Text("Hello, $ownerCats !", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),)
+            ],
           ),
-          title: const Text(
-            "CatApps",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          backgroundColor: Colors.blue[200],
+          backgroundColor: Colors.white,
         ),
         body: TabBarView(
-            children: [Home(viewModel: widget.catViewModel), Formscreen()]),
+          children: [
+          Home(viewModel: widget.catViewModel),
+          ContactUsScreen()
+        ]),
         bottomNavigationBar: const TabBar(tabs: [
           Tab(
             text: "แมวของฉัน",

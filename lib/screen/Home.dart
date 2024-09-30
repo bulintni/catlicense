@@ -24,39 +24,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //Data
-    // final List<CatsData> catsdata = [
-    //   CatsData(
-    //       firstName: "Jone",
-    //       lastName: "Nema",
-    //       address: "address",
-    //       phoneNumber: "0922222222",
-    //       catName: "Lila",
-    //       catImage: "assets/images/cat1.jpg"),
-    //   CatsData(
-    //       firstName: "Nass",
-    //       lastName: "Sala",
-    //       address: "address",
-    //       phoneNumber: "0933333333",
-    //       catName: "Orange",
-    //       catImage: "assets/images/cat2.jpg"),
-    //   CatsData(
-    //       firstName: "Nass",
-    //       lastName: "Sala",
-    //       address: "address",
-    //       phoneNumber: "0933333333",
-    //       catName: "Orange",
-    //       catImage: "assets/images/cat2.jpg"),
-    //   CatsData(
-    //       firstName: "Nass",
-    //       lastName: "Sala",
-    //       address: "address",
-    //       phoneNumber: "0933333333",
-    //       catName: "Orange",
-    //       catImage: "assets/images/cat2.jpg"),
-    // ];
 
     return Container(
+      color: Colors.white,
       margin: const EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -107,7 +77,8 @@ class _HomeState extends State<Home> {
                           final data = document.data() as Map<String, dynamic>;
 
                           return Card(
-                            elevation: 5,
+                            color: Colors.white,
+                            elevation: 2,
                             margin: EdgeInsets.all(10),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -172,7 +143,7 @@ class _HomeState extends State<Home> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const Formscreen();
                 }));
-                print('เพิ่มแมวใหม่');
+                print('เพิ่มแมวของคุณ');
               },
               style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.black26),
@@ -180,7 +151,7 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.circular(5))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add), Text("เพิ่มแมวใหม่")],
+                children: [Icon(Icons.add, color: Colors.black,), Text("เพิ่มแมวของคุณ",style: TextStyle(color: Colors.black),)],
               ),
             ),
           )
