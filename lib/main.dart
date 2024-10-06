@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("MeowApps", style: TextStyle(fontWeight: FontWeight.bold),),
-              Text("Hello, $ownerCats !", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),)
+              Text("Welcome To Cat Licence", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),)
             ],
           ),
           backgroundColor: Colors.white,

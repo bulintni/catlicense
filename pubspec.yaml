@@ -44,6 +44,13 @@ dependencies:
   provider: ^6.1.2
   form_field_validator: ^1.1.0
   cloud_firestore: ^5.4.2
+  pdf: ^3.6.0
+  printing: ^5.10.0
+  qr_flutter: ^4.1.0
+  screenshot: ^3.0.0
+  permission_handler: ^11.2.0
+  image_gallery_saver: ^2.0.3
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +82,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/Font/THsarabunNew.ttf
+    - assets/Font/Kanit-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

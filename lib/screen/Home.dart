@@ -1,6 +1,7 @@
 import 'package:catlicense/firebase_options.dart';
 import 'package:catlicense/model/catdata.dart';
 import 'package:catlicense/provider/CatViewModel.dart';
+import 'package:catlicense/screen/DetailLicence.dart';
 import 'package:catlicense/screen/FormScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,9 +23,24 @@ class _HomeState extends State<Home> {
     // initializeFirebase();
   }
 
+  void showFormOverlay(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: SizedBox(
+            width: double.maxFinite,
+            child: Formscreen(), // เรียกใช้ FormScreen ที่อยู่ในไฟล์อื่น
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: Colors.white,
       margin: const EdgeInsets.all(10),
@@ -35,14 +51,17 @@ class _HomeState extends State<Home> {
           Card(
             elevation: 0,
             margin: const EdgeInsets.symmetric(vertical: 20),
+            color: Colors.green.shade50,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 150,
-                child: Image.asset(
-                  'assets/images/BannerTest.png',
-                  fit: BoxFit.cover,
+                child: Center(
+                  child: Text(
+                    "พื้นที่โฆษณา",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),
@@ -75,28 +94,66 @@ class _HomeState extends State<Home> {
                         itemBuilder: (context, index) {
                           final document = snapshot.data!.docs[index];
                           final data = document.data() as Map<String, dynamic>;
+                          final pdfUrl = data["pdfUrl"];
 
                           return Card(
                             color: Colors.white,
                             elevation: 2,
                             margin: EdgeInsets.all(10),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: ListTile(
-                                  leading: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(data["catsImagePath"]),
+                            child: InkWell(
+                              onTap: () async {
+                                var catImage = data["catsImagePath"];
+                                var catName = data["catName"];
+                                var fname = data["fname"];
+                                var lname = data["lname"];
+                                var address = data["address"];
+                                var phoneNumber = data["phoneNumber"];
+                                var pdfUrl = data["pdfUrl"];
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailLicence(
+                                      catsImagePath: catImage,
+                                      catName: catName,
+                                      fname: fname,
+                                      lname: lname,
+                                      address: address,
+                                      phoneNumber: phoneNumber,
+                                      pdfUrl: pdfUrl,
+                                    ),
                                   ),
-                                  title: Text("Cat Name : ${data["catName"]}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "Owner : ${data["fname"]} ${data["lname"]}", style: TextStyle(fontSize: 14),),
-                                      Text("PhoneNumber : ${data["phoneNumber"]}", style: TextStyle(fontSize: 12),),
-                                    ],
-                                  )),
+                                );
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                                child: ListTile(
+                                    leading: CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage:
+                                          NetworkImage(data["catsImagePath"]),
+                                    ),
+                                    title: Text(
+                                      "Cat Name : ${data["catName"]}",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Owner : ${data["fname"]} ${data["lname"]}",
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                        Text(
+                                          "PhoneNumber : ${data["phoneNumber"]}",
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ],
+                                    )),
+                              ),
                             ),
                           );
                         }),
@@ -140,9 +197,10 @@ class _HomeState extends State<Home> {
             margin: const EdgeInsets.symmetric(horizontal: 8),
             child: OutlinedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const Formscreen();
-                }));
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return const Formscreen();
+                // }));
+                showFormOverlay(context);
                 print('เพิ่มแมวของคุณ');
               },
               style: OutlinedButton.styleFrom(
@@ -151,7 +209,16 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.circular(5))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, color: Colors.black,), Text("เพิ่มแมวของคุณ",style: TextStyle(color: Colors.black),)],
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.black,
+                  ),
+                  Text(
+                    "เพิ่มแมวของคุณ",
+                    style: TextStyle(color: Colors.black),
+                  )
+                ],
               ),
             ),
           )
